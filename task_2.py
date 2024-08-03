@@ -61,13 +61,20 @@ def visualize_interesting_network(users: List[User], interesting_users):
         truncated_label = truncated_label[0][0] + truncated_label[1][0]
 
         G.add_node(user.user_name, label=truncated_label,
-            color='blue', size=len(user.posts) * 300 + 300)
+            color='blue', size=len(user.posts) * 300 + 300, node_type='user')
 
     # Adding post nodes and connecting them with authors and viewers
     for user in users:
         for post in user.posts:
-            G.add_node(post.uid, label=str(post.uid), color='green', size=300)
+            G.add_node(post.uid, label=str(post.uid), color='green', size=300, node_type='post')
             G.add_edge(user.user_name, post.uid, color='green', label="Authored")
+
+            for comment in post.comments:
+                comment_id = f'comment_{id(comment)}'
+                G.add_node(comment_id, label='C', color='orange', size=200, node_type='comment')
+                G.add_edge(comment.author.user_name, comment_id, color='orange', label="")
+                G.add_edge(comment_id, post.uid, color='gray', label="")
+
             for viewer in post.viewers:
                 view_count = len(post.viewers)
                 # Keeping label an empty string to not clutter the vis
@@ -93,8 +100,9 @@ def visualize_interesting_network(users: List[User], interesting_users):
 
     user_patch = mpatches.Patch(color='blue', label='User')
     post_patch = mpatches.Patch(color='green', label='Post')
+    comment_patch = mpatches.Patch(color='orange', label='Comment')
     interesting_patch = mpatches.Patch(color='red', label='Interesting User')
-    plt.legend(handles=[user_patch, post_patch, interesting_patch])
+    plt.legend(handles=[user_patch, post_patch, comment_patch, interesting_patch])
 
     plt.show()
 
@@ -106,7 +114,7 @@ comments = generate_fake_comments(posts, userbase, 2)
 views = generate_fake_views(posts, userbase)
 
 criteria = {
-    'age': ('<', 35),
+    'age': ('<', 40),
     'gender': 'Female',
     'comments_count': ('>', 1)
 }
