@@ -1,58 +1,29 @@
-# This module defines the different node types.
+from dataclasses import dataclass, field
+from typing import List, Any
 
+@dataclass
 class User:
-    def __init__(
-        self,
-        user_name,
-        real_name,
-        age,
-        gender,
-        workplace,
-        location):
+    user_name: str
+    real_name: str
+    age: int
+    gender: str
+    workplace: str
+    location: str
+    posts: List['Post'] = field(default_factory=list)
+    comments: List['Comment'] = field(default_factory=list)
+    viewed_posts: List['Post'] = field(default_factory=list)
 
-        self.user_name = user_name
-        self.real_name = real_name
-        self.age = age
-        self.gender = gender
-        self.workplace = workplace
-        self.location = location
-        self.connection = []
-        self.posts = []
-        self.comments = []
-        self.viewed_posts = []
-
-    def __str__(self):
-        return (
-            f"Username: {self.user_name} - "
-            f"Real Name: {self.real_name} - "
-            f"Age: {self.age} - "
-            f"Gender: {self.gender} - "
-            f"Workplace: {self.workplace} - "
-            f"Location: {self.location} -"
-            f"# of Posts: {len(self.posts)}")
-
+@dataclass
 class Post:
-    def __init__(
-        self, 
-        uid,
-        content,
-        author,
-        timestamp):
-    
-        self.uid = uid
-        self.content = content
-        self.author = author
-        self.timestamp = timestamp
-        self.viewers = []
-        self.comments = []
+    uid: int
+    content: str
+    author: User
+    timestamp: Any
+    viewers: List[User] = field(default_factory=list)
+    comments: List['Comment'] = field(default_factory=list)
 
+@dataclass
 class Comment:
-    def __init__(
-        self,
-        content,
-        author,
-        timestamp):
-
-        self.content = content
-        self.author = author
-        self.timestamp = timestamp
+    content: str
+    author: User
+    timestamp: Any

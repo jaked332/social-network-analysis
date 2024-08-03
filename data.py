@@ -7,6 +7,9 @@ from node import User, Post, Comment
 
 generator = Faker()
 
+# Counter for a unique identifier.
+post_id_counter = 1
+
 def generate_fake_users(num_users, min_age=18, max_age=65):
     users = []
 
@@ -38,16 +41,17 @@ def generate_fake_users(num_users, min_age=18, max_age=65):
     return users
 
 def generate_fake_posts(users, max_number_of_posts=3):
+    global post_id_counter
     posts = []
 
     for i, u in enumerate(users):
         post_count = random.randint(1, max_number_of_posts)
         for _ in range(post_count):
-            generated_content = generator.text(max_nb_chars=100)
+            generated_content = generator.text(max_nb_chars=50)
             timestamp = generator.date_time_this_year()
 
-            # TODO: Make this more determinstic.
-            current_post = Post(i + random.randint(1, 500), generated_content, u, timestamp)
+            current_post = Post(post_id_counter, generated_content, u, timestamp)
+            post_id_counter += 1
 
             u.posts.append(current_post)
             posts.append(current_post)
@@ -58,12 +62,9 @@ def generate_fake_comments(posts, users, max_comments_per_post):
     for post in posts:
         random_comment_count = random.randint(1, max_comments_per_post)
         for _ in range(random_comment_count):
-            comment_str = generator.sentence()
-            timestamp = generator.date_time_this_year()
-            author = random.choice(users)
-            current_comment = Comment(comment_str, author, timestamp)
-            post.comments.append(current_comment)
-            author.comments.append(current_comment)
+            comment = Comment(generator.sentence(), random.choice(users), generator.date_time_this_year())
+            post.comments.append(comment)
+            comment.author.comments.append(comment)
 
 def generate_fake_views(posts, users):
     for post in posts:
