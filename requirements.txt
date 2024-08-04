@@ -2,3 +2,4 @@ prettytable
 matplotlib
 networkx
 faker
+wordcloud
