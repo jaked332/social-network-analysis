@@ -2,6 +2,11 @@
 import random
 import matplotlib.pyplot as plt
 import names
+from data import (
+    generate_fake_users,
+    generate_fake_posts,
+    generate_fake_comments,
+    generate_fake_views)
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 
 stopWords = set(STOPWORDS)
@@ -30,9 +35,9 @@ def generateUsers(userNum = 3, minAge = 5, maxAge = 100):
 # Function used to make of list of dictionaries of words as key and frequency as their integer values another dictionary 
 # which has a userName as key and list of people who have used that word as value :
 #  [{“word1” : frequency}, ...]
-def generateUserPosts(users, maxNumPost = 3):
+def generateWordFrequency(posts, maxNumPost = 3):
+    wordFreqDict = []
     
-    for user in (len(users) - 1):
 
 # Criteria that must be met so that it is included in the wordcloud.
 criteria = {
@@ -43,3 +48,6 @@ criteria = {
 
 # Generate new users with their attributes
 newUsers = generateUsers(5, 10, 65)
+# Get the list of dictionaries of the words and their frequencies.
+wordFrequencyDict = generateWordFrequency(generate_fake_posts(newUsers))
+
