@@ -32,12 +32,17 @@ def generateUsers(userNum = 3, minAge = 5, maxAge = 100):
     print(f"Generated {counter} profiles out of {userNum} generated users.")
     return createdUsers
 
-# Function used to make of list of dictionaries of words as key and frequency as their integer values another dictionary 
-# which has a userName as key and list of people who have used that word as value :
-#  [{“word1” : frequency}, ...]
-def generateWordFrequency(posts, maxNumPost = 3):
-    wordFreqDict = []
-    
+# Function is used to make a dictionary of words as the key and frequency count as their value.
+def generateWordFrequencyDict(posts):
+    wordFrequency = {}
+    wordSplit = posts[word].split
+    for word in wordSplit:
+        wordFrequency[word] = wordFrequency.get(word, 0) + 1
+
+## Couldn't finish
+#def descendingQuickSort(dictionary, left, right):
+
+
 
 # Criteria that must be met so that it is included in the wordcloud.
 criteria = {
@@ -48,6 +53,18 @@ criteria = {
 
 # Generate new users with their attributes
 newUsers = generateUsers(5, 10, 65)
-# Get the list of dictionaries of the words and their frequencies.
-wordFrequencyDict = generateWordFrequency(generate_fake_posts(newUsers))
 
+# Get the list of fake posts, it will be a tuple.
+generateFakePosts = generate_fake_posts(newUsers,4)
+# A string that will hold all the sentences of generateFakePosts.
+allPosts = ""
+# For loop of only getting the sentences of generateFakePosts
+for post in range(len(generateFakePosts)):
+    allPosts += generateFakePosts[post][1]
+    allPosts += " "
+
+# Get the dictionary of every word and their frequency.
+wordFrequencyDict = generateWordFrequencyDict(allPosts)
+
+# We want to get the list of all sentences in 
+descendingSort = descendingQuickSort(wordFrequencyDict)
