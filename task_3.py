@@ -20,10 +20,14 @@ def createUsers(userNum = 3, minAge = 5, maxAge = 100):
         userName = names.get_full_name(gender)
         region = random.choice(["Africa", "Asia", "Central America", "Europe", "Middle East", "North America", "Pacific", "South America"])
 
-        currentUser = {}
+        currentUser = {userName : [age, gender, region]}
+        createdUsers.append(currentUser)
+    
+    print(f"Generated {userNum} profiles.")
+    return createdUsers
+
 # Function used to make a list of dictionaries of user's name as key and a list of string words as value.
 
 # Function used to make of list of dictionaries of words as key and frequency as their integer values another dictionary 
 # which has a userName as key and list of people who have used that word as value :
 #  [{“word1” : frequency}, ...]
-
